@@ -72,6 +72,10 @@ export interface Config {
     media: Media;
     categories: Category;
     users: User;
+    skills: Skill;
+    'skills-categories': SkillsCategory;
+    portfolio: Portfolio;
+    experience: Experience;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -94,6 +98,10 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    skills: SkillsSelect<false> | SkillsSelect<true>;
+    'skills-categories': SkillsCategoriesSelect<false> | SkillsCategoriesSelect<true>;
+    portfolio: PortfolioSelect<false> | PortfolioSelect<true>;
+    experience: ExperienceSelect<false> | ExperienceSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -780,6 +788,119 @@ export interface Form {
   createdAt: string;
 }
 /**
+ * Developer skills collection
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "skills".
+ */
+export interface Skill {
+  id: number;
+  title: string;
+  image?: (number | null) | Media;
+  description?: string | null;
+  tooltip?: string | null;
+  categories?: (number | null) | SkillsCategory;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Developer skills category collection
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "skills-categories".
+ */
+export interface SkillsCategory {
+  id: number;
+  title: string;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Developer portfolio list collection
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "portfolio".
+ */
+export interface Portfolio {
+  id: number;
+  title: string;
+  image?: (number | null) | Media;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  'tech-stack'?: (number | Skill)[] | null;
+  publishedAt?: string | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * Developer experience collection
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "experience".
+ */
+export interface Experience {
+  id: number;
+  title: string;
+  image?: (number | null) | Media;
+  'date-from'?: string | null;
+  'date-to'?: string | null;
+  current?: boolean | null;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  'tech-stack'?: (number | Skill)[] | null;
+  publishedAt?: string | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
@@ -988,6 +1109,22 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'users';
         value: number | User;
+      } | null)
+    | ({
+        relationTo: 'skills';
+        value: number | Skill;
+      } | null)
+    | ({
+        relationTo: 'skills-categories';
+        value: number | SkillsCategory;
+      } | null)
+    | ({
+        relationTo: 'portfolio';
+        value: number | Portfolio;
+      } | null)
+    | ({
+        relationTo: 'experience';
+        value: number | Experience;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1353,6 +1490,67 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "skills_select".
+ */
+export interface SkillsSelect<T extends boolean = true> {
+  title?: T;
+  image?: T;
+  description?: T;
+  tooltip?: T;
+  categories?: T;
+  generateSlug?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "skills-categories_select".
+ */
+export interface SkillsCategoriesSelect<T extends boolean = true> {
+  title?: T;
+  generateSlug?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "portfolio_select".
+ */
+export interface PortfolioSelect<T extends boolean = true> {
+  title?: T;
+  image?: T;
+  content?: T;
+  'tech-stack'?: T;
+  publishedAt?: T;
+  generateSlug?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "experience_select".
+ */
+export interface ExperienceSelect<T extends boolean = true> {
+  title?: T;
+  image?: T;
+  'date-from'?: T;
+  'date-to'?: T;
+  current?: T;
+  content?: T;
+  'tech-stack'?: T;
+  publishedAt?: T;
+  generateSlug?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1749,6 +1947,14 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'posts';
           value: number | Post;
+        } | null)
+      | ({
+          relationTo: 'portfolio';
+          value: number | Portfolio;
+        } | null)
+      | ({
+          relationTo: 'experience';
+          value: number | Experience;
         } | null);
     global?: string | null;
     user?: (number | null) | User;

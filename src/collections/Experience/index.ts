@@ -1,25 +1,54 @@
 import { authenticated } from '@/access/authenticated'
 import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
-import { slugField, type CollectionConfig } from 'payload'
-import { revalidateDelete, revalidatePortfolio } from './hooks/revalidatePortfolio'
+import { Access, slugField, type CollectionConfig } from 'payload'
+import { revalidateDelete, revalidateExperience } from './hooks/revalidateExperience'
 
+const canReadExperience: Access = async ({ req, id }) => {
+  const { payload, user } = req;
 
-export const Portfolio: CollectionConfig = {
-    slug:'portfolio',
+  // If authenticated, allow access to all documents
+  if (user) return true;
+
+  // If not authenticated, allow only the latest document
+  // First, get the newest one
+  const latest = await payload.find({
+    collection: 'experience',
+    sort: '-date-from',
+    where: {
+        current:{
+            equals:true
+        }
+    },
+    limit: 1,
+  });
+
+  const latestID = latest.docs[0]?.id;
+
+  // If this document IS the latest, allow access
+  if (id && id === latestID) {
+    return true;
+  }
+
+  // Otherwise block it for unauthenticated users
+  return false;
+};
+
+export const Experiences: CollectionConfig = {
+    slug:'experience',
     admin:{
         group:'Developer Collection',
         useAsTitle:'title',
-        description:'Developer portfolio list collection'
+        description:'Developer experience collection'
     },
     access:{
         create: authenticated,
         delete: authenticated,
-        read: authenticatedOrPublished,
+        read: canReadExperience,
         update: authenticated,
     },
     labels:{
-        singular:'Portfolio',
-        plural:'Portfolio'
+        singular:'Experience',
+        plural:'Experiences'
     },
     fields:[
         {
@@ -31,6 +60,22 @@ export const Portfolio: CollectionConfig = {
             name:'image',
             type: 'upload',
             relationTo: 'media'
+        },
+        {
+            name:'date-from',
+            type:'date'
+        },
+        {
+            name:'date-to',
+            type:'date',
+            admin:{
+                condition:(data) => !data?.current
+            }
+        },
+        {
+            name:'current',
+            type:'checkbox',
+            label: 'Still working here'
         },
         {
             name:'content',
@@ -74,7 +119,7 @@ export const Portfolio: CollectionConfig = {
         maxPerDoc: 50,
     },
     hooks: {
-        afterChange: [revalidatePortfolio],
+        afterChange: [revalidateExperience],
         afterDelete: [revalidateDelete],
     },
     timestamps:true

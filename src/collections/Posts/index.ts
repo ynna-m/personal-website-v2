@@ -230,4 +230,5 @@ export const Posts: CollectionConfig<'posts'> = {
     },
     maxPerDoc: 50,
   },
+  timestamps:true
 }

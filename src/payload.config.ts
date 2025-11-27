@@ -16,6 +16,10 @@ import { Header } from './Header/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
+import { SkillsCategories } from './collections/SkillsCategories'
+import { Skills } from './collections/Skills'
+import { Portfolio } from './collections/Portfolio'
+import { Experiences } from './collections/Experience'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -69,7 +73,12 @@ export default buildConfig({
     Posts, 
     Media, 
     Categories, 
-    Users],
+    Users,
+    Skills,
+    SkillsCategories,
+    Portfolio,
+    Experiences
+],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
   plugins: [

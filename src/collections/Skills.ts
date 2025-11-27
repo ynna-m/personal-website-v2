@@ -30,6 +30,11 @@ export const Skills: CollectionConfig = {
             required: true,
         },
         {
+            name:'image',
+            type: 'upload',
+            relationTo: 'media'
+        },
+        {
             name:'description',
             type:'textarea'
         },
@@ -38,20 +43,14 @@ export const Skills: CollectionConfig = {
             type:'textarea'
         },
         {
-            name:'image',
-            type: 'upload',
-            relationTo: 'media'
+            name: 'categories',
+            type: 'relationship',
+            admin: {
+                position: 'sidebar',
+            },
+            hasMany: false,
+            relationTo: 'skills-categories',
         },
-       
         slugField()
     ]
 }
-//  {
-//             name: 'categories',
-//             type: 'relationship',
-//             admin: {
-//             position: 'sidebar',
-//             },
-//             hasMany: true,
-//             relationTo: 'skills-categories',
-//         },

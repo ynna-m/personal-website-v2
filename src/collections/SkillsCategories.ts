@@ -6,14 +6,16 @@ import { slugField } from 'payload'
 
 export const SkillsCategories: CollectionConfig = {
   slug: 'skills-categories',
+  admin: {
+    group:'Developer Collection',
+    useAsTitle:'title',
+    description:'Developer skills category collection'
+  },
   access: {
     create: authenticated,
     delete: authenticated,
     read: anyone,
     update: authenticated,
-  },
-  admin: {
-    useAsTitle: 'title',
   },
   fields: [
     {
