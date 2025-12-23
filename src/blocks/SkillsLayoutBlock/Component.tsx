@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import type {  Media as MediaProp, SkillsCategory, SkillsLayoutBlock as SkillsLayoutBlockProps } from "@/payload-types"
+import type {  Media as MediaProp, Skill, SkillsCategory, SkillsLayoutBlock as SkillsLayoutBlockProps } from "@/payload-types"
 import { payloadGraphQL } from '@/utilities/payloadGraphQL'
 import { Input } from '@/components/ui/input'
 import { useDebounce } from '@/utilities/useDebounce'
@@ -8,6 +8,12 @@ import { Filters } from './Filters'
 import { Media } from '@/components/Media'
 import { Search } from 'lucide-react'
 import { Progress } from '@/components/ui/progress'
+import {
+    TooltipProvider,
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 export type Option = {
     label:string,
@@ -323,18 +329,42 @@ export const SkillsLayoutBlock:React.FC<SkillsLayoutBlockProps> = (props) => {
                         </div>
                     )}
                 {
-                    skillsLayout?.filter((skillsCategory: { skills: string | any[] | null })=>!(skillsCategory.skills == null || skillsCategory.skills?.length === 0))?.map((skillsCategory: { category: { label: string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<string | number | bigint | boolean | React.ReactPortal | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined> | null | undefined }; skills: { image: string | number | MediaProp | null | undefined }[] }, index: React.Key | null | undefined)=>{
+                    skillsLayout
+                        ?.filter((skillsCategory: { skills: string | any[] | null })=>!(skillsCategory.skills == null || skillsCategory.skills?.length === 0))
+                        ?.map((skillsCategory: { category: { label: string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<string | number | bigint | boolean | React.ReactPortal | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined> | null | undefined }; skills: Skill[]}, index: React.Key | null | undefined)=>{
                         return(
                             <div className="skills-category" key={index}>
                                 <div className="skills-heading"><h3>{skillsCategory?.category?.label}</h3></div>
                                 <div className="skills-layout-set">
                                     {
-                                        skillsCategory?.skills?.map((skill: { image: string | number | MediaProp | null | undefined },key: React.Key | null | undefined)=>{
+                                        skillsCategory?.skills?.map((skill: Skill,key: React.Key | null | undefined)=>{
                                             return(
-                                                 <div className="skills-tile-container" key={key}>
-                                                    <div className={`skills-tile`}>
-                                                        <Media resource={skill.image} />
-                                                    </div>
+                                                 <div 
+                                                    className="skills-tile-container" 
+                                                    key={key}
+                                                >
+                                                    {
+                                                        skill?.tooltip 
+                                                        ? (
+                                                            <Tooltip>
+                                                                <TooltipTrigger asChild>
+                                                                    <Media
+                                                                        className='skills-tile'
+                                                                        resource={skill.image}
+                                                                    />
+                                                                </TooltipTrigger>
+                                                                <TooltipContent>
+                                                                    <p>{skill?.tooltip}</p>
+                                                                </TooltipContent>
+                                                            </Tooltip>
+                                                        )
+                                                        : (
+                                                            <Media
+                                                                className='skills-tile'
+                                                                resource={skill.image}
+                                                            />
+                                                        )
+                                                    }
                                                 </div>
                                             )
                                         })

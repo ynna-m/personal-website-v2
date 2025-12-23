@@ -21,6 +21,7 @@ import { Skills } from './collections/Skills'
 import { Portfolio } from './collections/Portfolio'
 import { Experiences } from './collections/Experience'
 import { SocialMedia } from './SocialMedia/config'
+import { SiteSettings } from './SiteSettings/config'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -83,7 +84,7 @@ export default buildConfig({
     Experiences
 ],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer, SocialMedia],
+  globals: [Header, Footer, SocialMedia, SiteSettings],
   plugins: [
     ...plugins,
     // storage-adapter-placeholder

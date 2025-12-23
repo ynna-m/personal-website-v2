@@ -16,7 +16,12 @@ import { draftMode } from 'next/headers'
 import './globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
 import { Inter, Funnel_Sans as FunnelSans} from 'next/font/google'
-
+import { PageLoaderProgress } from '@/components/PageLoaderProgress'
+import { getPayload } from 'payload'
+import config from '@payload-config'
+import { UnderConstructionMode } from '@/components/UnderConstructionMode'
+import { authenticated } from '@/access/authenticated'
+import { getMeUser } from '@/utilities/getMeUser'
 
 const inter = Inter({
     variable: '--font-inter',
@@ -27,31 +32,49 @@ const funnelSans = FunnelSans({
     subsets: ['latin'],
 })
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const { isEnabled } = await draftMode()
-    
-  return (
-    <html className={`${inter.variable} ${funnelSans.variable}`} lang="en" suppressHydrationWarning>
-      <head>
-        <InitTheme />
-        <link href="/favicon.png" rel="icon" sizes="32x32" />
-        <link href="/favicon.png" rel="icon" type="image/png" />
-      </head>
-      <body>
-        <Providers>
-          <AdminBar
-            adminBarProps={{
-              preview: isEnabled,
-            }}
-          />
 
-          <Header />
-          {children}
-          <Footer />
-        </Providers>
-      </body>
-    </html>
-  )
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+    const { isEnabled } = await draftMode()
+    const payload = await getPayload({config});
+    const siteSettings = await payload.findGlobal({
+        slug: 'siteSettings',
+        depth: 2, // To populate upload fields
+    })
+    const { general } = siteSettings
+    const { user } = await getMeUser();
+    // console.log("RootLayout - siteSettings", siteSettings);
+    return (
+        <html className={`${inter.variable} ${funnelSans.variable}`} lang="en" suppressHydrationWarning>
+            <head>
+                <InitTheme />
+                <link href="/favicon.png" rel="icon" sizes="32x32" />
+                <link href="/favicon.png" rel="icon" type="image/png" />
+            </head>
+            <body>
+                {
+                    (general?.isUnderConst && !user) && (
+                        <UnderConstructionMode {...general} />
+                    )
+                }
+                {
+                    (!general?.isUnderConst || user)  && (
+                        <Providers>
+                            <PageLoaderProgress />
+                            <AdminBar
+                                adminBarProps={{
+                                    preview: isEnabled,
+                                }}
+                            />
+
+                            <Header />
+                                {children}
+                            <Footer />
+                        </Providers>
+                    )
+                }
+            </body>
+        </html>
+    )
 }
 
 export const metadata: Metadata = {

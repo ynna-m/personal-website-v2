@@ -5,7 +5,7 @@ import { IconCloud } from '@/components/ui/icon-cloud'
 
 
 export const SkillsCloudBlock: React.FC<SkillsCloudBlockProps> = async (props) => {
-    console.log("SkillsCloudBlock.tsx - props",props)
+    // console.log("SkillsCloudBlock.tsx - props",props)
     const { skills, customClassNames, width, height } = props
     const skillsFormat = skills as Skill[] | null
     const images = skillsFormat?.map((skill)=>{

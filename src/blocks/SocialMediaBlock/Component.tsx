@@ -29,7 +29,7 @@ export const SocialMediaBlock:React.FC<SocialMediaBlockProps> = async (props) =>
         slug: 'socialMedia',
         depth: 1,
     }) as SocialMedia
-    console.log("SocialMediaBlock.tsx - socialMedia", socialMedia);
+    // console.log("SocialMediaBlock.tsx - socialMedia", socialMedia);
     const socialMediaIconMap = socialMedia?.platforms 
         ? await Promise.all(socialMedia?.platforms?.map(async (platform)=>{
             const platformIconTyped = platform?.icon as MediaType

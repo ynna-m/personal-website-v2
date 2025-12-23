@@ -121,11 +121,13 @@ export interface Config {
     header: Header;
     footer: Footer;
     socialMedia: SocialMedia;
+    siteSettings: SiteSetting;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
     socialMedia: SocialMediaSelect<false> | SocialMediaSelect<true>;
+    siteSettings: SiteSettingsSelect<false> | SiteSettingsSelect<true>;
   };
   locale: null;
   user: User & {
@@ -2370,6 +2372,35 @@ export interface SocialMedia {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "siteSettings".
+ */
+export interface SiteSetting {
+  id: number;
+  general?: {
+    isUnderConst?: boolean | null;
+    underConstTitle?: string | null;
+    underConstMessage?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    underConstBackgroundColor?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
@@ -2426,6 +2457,23 @@ export interface SocialMediaSelect<T extends boolean = true> {
         url?: T;
         icon?: T;
         id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "siteSettings_select".
+ */
+export interface SiteSettingsSelect<T extends boolean = true> {
+  general?:
+    | T
+    | {
+        isUnderConst?: T;
+        underConstTitle?: T;
+        underConstMessage?: T;
+        underConstBackgroundColor?: T;
       };
   updatedAt?: T;
   createdAt?: T;

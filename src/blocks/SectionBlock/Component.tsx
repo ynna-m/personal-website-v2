@@ -48,7 +48,7 @@ export const SectionBlock: React.FC<SectionBlockProps> = async (props) => {
         singleDocumentBlock: 'single-document'
 
     }
-    console.log("SectionBlock.tsx - props", props)
+    // console.log("SectionBlock.tsx - props", props)
     const parallaxOverlayClass = `after:content-[''] after:w-full after:h-full after:z-20 
     after:col-start-1 after:row-start-1 after:bg-dynamic`
     // const parallaxOverlayClass = ``
@@ -91,13 +91,13 @@ export const SectionBlock: React.FC<SectionBlockProps> = async (props) => {
                     // console.log("SectionBlock.tsx - blocks", blocks)
                     return (
                         <div className={`section-column ${cn(`col-span-4 lg:col-span-${colsSpanClasses[size!]}`, {
-                                                'md:col-span-12': size !== 'full',
+                                                'col-span-12': size !== 'full',
                                 })} ${colClassNames ?? ``}`} key={index} >
                                 
                             
                             {
                                 blocks?.map((block, key)=>{
-                                    console.log("SectionBlock.tsx - blockMap",block)
+                                    // console.log("SectionBlock.tsx - blockMap",block)
                                     return(
                                         <React.Fragment key={key}>
                                         
