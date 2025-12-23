@@ -7,16 +7,17 @@ import type { Footer } from '@/payload-types'
 import { ThemeSelector } from '@/providers/Theme/ThemeSelector'
 import { CMSLink } from '@/components/Link'
 import { Logo } from '@/components/Logo/Logo'
-
+import {format} from 'date-fns'
 export async function Footer() {
   const footerData: Footer = await getCachedGlobal('footer', 1)()
 
   const navItems = footerData?.navItems || []
 
   return (
-    <footer className="mt-auto border-t border-border bg-black dark:bg-card text-white">
-      <div className="container py-8 gap-8 flex flex-col md:flex-row md:justify-between">
-        <Link className="flex items-center" href="/">
+    <footer className="mt-auto  bg-primary-dark dark:bg-card text-primary-yellow z-[98] relative">
+      <div className="container py-8 gap-8 flex justify-center">
+        © Ynna Maurer {format(new Date(), 'yyyy')}. All Rights Reserved.
+        {/* <Link className="flex items-center" href="/">
           <Logo />
         </Link>
 
@@ -27,7 +28,7 @@ export async function Footer() {
               return <CMSLink className="text-white" key={i} {...link} />
             })}
           </nav>
-        </div>
+        </div> */}
       </div>
     </footer>
   )

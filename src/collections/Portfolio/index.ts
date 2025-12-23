@@ -2,7 +2,14 @@ import { authenticated } from '@/access/authenticated'
 import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
 import { slugField, type CollectionConfig } from 'payload'
 import { revalidateDelete, revalidatePortfolio } from './hooks/revalidatePortfolio'
-
+import { fullLexical } from '@/fields/fullLexical'
+import {
+  MetaDescriptionField,
+  MetaImageField,
+  MetaTitleField,
+  OverviewField,
+  PreviewField,
+} from '@payloadcms/plugin-seo/fields'
 
 export const Portfolio: CollectionConfig = {
     slug:'portfolio',
@@ -28,20 +35,59 @@ export const Portfolio: CollectionConfig = {
             required: true,
         },
         {
-            name:'image',
-            type: 'upload',
-            relationTo: 'media'
+            type:'tabs',
+            tabs:[
+                {
+                    label:'Content',
+                    fields:[
+                        {
+                            name:'image',
+                            type: 'upload',
+                            relationTo: 'media'
+                        },
+                        {
+                            name:'content',
+                            type:'richText',
+                            editor: fullLexical,
+                        },
+                        {
+                            name: 'tech-stack',
+                            type: 'relationship',
+                            hasMany: true,
+                            relationTo: 'skills',
+                        },
+                    ]
+                },
+                {
+                    name:'meta',
+                    label:'SEO',
+                    fields:[
+                        OverviewField({
+                            titlePath: 'meta.title',
+                            descriptionPath: 'meta.description',
+                            imagePath: 'meta.image',
+                        }),
+                        MetaTitleField({
+                            hasGenerateFn: true,
+                        }),
+                        MetaImageField({
+                            relationTo: 'media',
+                        }),
+            
+                        MetaDescriptionField({}),
+                        PreviewField({
+                            // if the `generateUrl` function is configured
+                            hasGenerateFn: true,
+            
+                            // field paths to match the target field for data
+                            titlePath: 'meta.title',
+                            descriptionPath: 'meta.description',
+                        }),
+                    ]
+                }
+            ]
         },
-        {
-            name:'content',
-            type:'richText'
-        },
-        {
-            name: 'tech-stack',
-            type: 'relationship',
-            hasMany: true,
-            relationTo: 'skills',
-        },
+        
         {
             name: 'publishedAt',
             type: 'date',

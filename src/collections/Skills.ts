@@ -1,5 +1,4 @@
 import { authenticated } from '@/access/authenticated'
-import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
 import { slugField, type CollectionConfig } from 'payload'
 
 
@@ -13,7 +12,7 @@ export const Skills: CollectionConfig = {
     access:{
         create: authenticated,
         delete: authenticated,
-        read: authenticatedOrPublished,
+        read: ()=>true,
         update: authenticated,
     },
     defaultSort:[

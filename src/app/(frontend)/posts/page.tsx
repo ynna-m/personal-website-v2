@@ -7,10 +7,17 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import React from 'react'
 import PageClient from './page.client'
+import ParallaxImage from '@/components/ParallaxImage'
+import { ImageMedia } from '@/components/Media/ImageMedia'
 
 export const dynamic = 'force-static'
 export const revalidate = 600
-
+const bgImage = {
+    src:'/media/bg_halftone_yellowv3.png',
+    size: "33vw",
+    width: 2550,
+    height: 3300
+}
 export default async function Page() {
   const payload = await getPayload({ config: configPromise })
 
@@ -19,24 +26,36 @@ export default async function Page() {
     depth: 1,
     limit: 12,
     overrideAccess: false,
-    select: {
-      title: true,
-      slug: true,
-      categories: true,
-      meta: true,
-    },
+    
   })
 
   return (
-    <div className="pt-24 pb-24">
+    <div className="pt-24 pb-24 blog relative bg-primary-dark-800">
       <PageClient />
-      <div className="container mb-16">
-        <div className="prose dark:prose-invert max-w-none">
-          <h1>Posts</h1>
+      <div 
+            className={`parallax-background absolute top-0 w-full h-full hidden col-start-1 lg:grid `}
+        >
+            <ParallaxImage 
+                src={bgImage.src}  
+                className='h-full object-cover w-full'
+                scale={1.2}
+            />
+        </div>
+        <div className={`background-image absolute top-0 w-full h-full flex lg:hidden parallax-background`}>
+            <ImageMedia src={bgImage} pictureClassName='h-full' imgClassName='h-full w-full object-cover'/>
+        </div>
+      <div className="container relative z-10  mb-16 bg-[#18181abd]">
+        <div className="prose dark:prose-invert max-w-none text-center text-primary-yellow font-bold">
+          <h1 className="font-bold uppercase">Blog</h1>
         </div>
       </div>
-
-      <div className="container mb-8">
+      <CollectionArchive posts={posts.docs} />
+      <div className="container relative z-10  text-tertiary-gray-500 ">
+        {posts.totalPages > 1 && posts.page && (
+          <Pagination page={posts.page} totalPages={posts.totalPages} />
+        )}
+      </div>
+      <div className="container relative z-10 mb-8 text-tertiary-gray-500 text-center bg-[#18181abd]">
         <PageRange
           collection="posts"
           currentPage={posts.page}
@@ -44,20 +63,12 @@ export default async function Page() {
           totalDocs={posts.totalDocs}
         />
       </div>
-
-      <CollectionArchive posts={posts.docs} />
-
-      <div className="container">
-        {posts.totalPages > 1 && posts.page && (
-          <Pagination page={posts.page} totalPages={posts.totalPages} />
-        )}
-      </div>
     </div>
   )
 }
 
 export function generateMetadata(): Metadata {
   return {
-    title: `Payload Website Template Posts`,
+    title: `Ynna Maurer | Developer Portfolio Website Blog Page`,
   }
 }

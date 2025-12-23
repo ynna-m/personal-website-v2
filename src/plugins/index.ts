@@ -12,9 +12,10 @@ import { beforeSyncWithSearch } from '@/search/beforeSync'
 
 import { Page, Post } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
+import { DynamicTextarea } from '@/blocks/DynamicFormBlocks/DynamicTextarea/config'
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
-  return doc?.title ? `${doc.title} | Payload Website Template` : 'Payload Website Template'
+  return doc?.title ? `${doc.title}` : 'Payload Website Template'
 }
 
 const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
@@ -57,6 +58,7 @@ export const plugins: Plugin[] = [
   formBuilderPlugin({
     fields: {
       payment: false,
+      dynamicTextArea:DynamicTextarea,
     },
     formOverrides: {
       fields: ({ defaultFields }) => {
@@ -64,6 +66,7 @@ export const plugins: Plugin[] = [
           if ('name' in field && field.name === 'confirmationMessage') {
             return {
               ...field,
+              required:true,
               editor: lexicalEditor({
                 features: ({ rootFeatures }) => {
                   return [

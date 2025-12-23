@@ -1,3 +1,4 @@
+import { DynamicTextarea } from '../DynamicFormBlocks/DynamicTextarea'
 import { Checkbox } from './Checkbox'
 import { Country } from './Country'
 import { Email } from './Email'
@@ -18,4 +19,5 @@ export const fields = {
   state: State,
   text: Text,
   textarea: Textarea,
+  dynamicTextarea: DynamicTextarea
 }

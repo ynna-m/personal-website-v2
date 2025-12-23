@@ -40,6 +40,10 @@ export const FormBlock: Block = {
       }),
       label: 'Intro Content',
     },
+    {
+        name:'customClassNames',
+        type:'text'
+    }
   ],
   graphQL: {
     singularName: 'FormBlock',

@@ -1,7 +1,7 @@
 import { authenticated } from '@/access/authenticated'
-import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
 import { Access, slugField, type CollectionConfig } from 'payload'
 import { revalidateDelete, revalidateExperience } from './hooks/revalidateExperience'
+import { fullLexical } from '@/fields/fullLexical';
 
 const canReadExperience: Access = async ({ req, id }) => {
   const { payload, user } = req;
@@ -38,7 +38,12 @@ export const Experiences: CollectionConfig = {
     admin:{
         group:'Developer Collection',
         useAsTitle:'title',
-        description:'Developer experience collection'
+        description:'Developer experience collection',
+        components:{
+            edit:{
+                PublishButton:'@/components/CustomExperienceButton'
+            }
+        }
     },
     access:{
         create: authenticated,
@@ -62,11 +67,11 @@ export const Experiences: CollectionConfig = {
             relationTo: 'media'
         },
         {
-            name:'date-from',
+            name:'dateFrom',
             type:'date'
         },
         {
-            name:'date-to',
+            name:'dateTo',
             type:'date',
             admin:{
                 condition:(data) => !data?.current
@@ -79,10 +84,11 @@ export const Experiences: CollectionConfig = {
         },
         {
             name:'content',
-            type:'richText'
+            type:'richText',
+            editor: fullLexical
         },
         {
-            name: 'tech-stack',
+            name: 'techStack',
             type: 'relationship',
             hasMany: true,
             relationTo: 'skills',

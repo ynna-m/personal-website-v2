@@ -5,6 +5,10 @@ export const MediaBlock: Block = {
   interfaceName: 'MediaBlock',
   fields: [
     {
+        name:'customClassNames',
+        type:'text'
+    },
+    {
       name: 'media',
       type: 'upload',
       relationTo: 'media',

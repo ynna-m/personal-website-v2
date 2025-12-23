@@ -14,6 +14,10 @@ import { PostHero } from '@/heros/PostHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
+import { ThemeImage } from '@/components/ThemeImage'
+import { format } from 'date-fns'
+import { formatAuthors } from '@/utilities/formatAuthors'
+import Link from 'next/link'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -52,7 +56,7 @@ export default async function Post({ params: paramsPromise }: Args) {
   if (!post) return <PayloadRedirects url={url} />
 
   return (
-    <article className="pt-16 pb-16">
+    <article className="pt-16 pb-16 bg-primary-dark-800 post">
       <PageClient />
 
       {/* Allows redirects for valid pages too */}
@@ -60,17 +64,66 @@ export default async function Post({ params: paramsPromise }: Args) {
 
       {draft && <LivePreviewListener />}
 
-      <PostHero post={post} />
-
+      {/* <PostHero post={post} /> */}
+    
       <div className="flex flex-col items-center gap-4 pt-8">
-        <div className="container">
-          <RichText className="max-w-[48rem] mx-auto" data={post.content} enableGutter={false} />
-          {post.relatedPosts && post.relatedPosts.length > 0 && (
-            <RelatedPosts
-              className="mt-12 max-w-[52rem] lg:grid lg:grid-cols-subgrid col-start-1 col-span-3 grid-rows-[2fr]"
-              docs={post.relatedPosts.filter((post) => typeof post === 'object')}
-            />
-          )}
+        <div className="container bg-primary-dark ">
+            <div className="back-to-portfolio-link mt-12">
+                <Link href={'/posts'}>← Back to Blog</Link>
+            </div>
+            <div className="post-hero-container">
+                <div className="post-image mt-12">
+                    <ThemeImage 
+                    {
+                        ...post?.heroImage 
+                        ? {resource:post.heroImage}
+                        : post?.meta?.image
+                        ? {resource:post?.meta?.image}
+                        : ''    
+                    
+                    }
+                        styling='style2'
+                    />
+                </div>
+            
+                <div className="post-title">
+                    <h1 className='font-bold text-center'>{post.title}</h1>
+                </div>
+                <div className="post-meta grid mx-auto max-w-[78rem] my-4 lg:grid-cols-3 lg:grid-rows-2 grid-rows-3 justify-center">
+                    <div className="post-categories row-start-1 col-span-3 grid gap-1 place-content-center grid-flow-col">
+                        {
+                            post?.categories 
+                            && post.categories?.map((category, index, array) => {
+                                if (typeof category === 'object') {
+                                    const { title: titleFromCategory } = category
+
+                                    const categoryTitle = titleFromCategory || 'Untitled category'
+
+                                    const isLast = index === array.length - 1
+
+                                    return (
+                                        <div className={`bg-primary-dark-gray px-4 py-1 rounded-xl`} key={index}>
+                                            {categoryTitle}
+                                        </div>
+                                    )
+                                }
+
+                                return null
+                            })
+                        }
+                    </div>
+                    <div className="post-publishedat lg:col-start-1 lg:row-start-2 row-start-2 lg:place-self-start place-self-center  text-tertiary-gray-400">{post?.publishedAt && format(new Date(post.publishedAt), "MM/dd/yyyy hh:mm:ssa")}</div>
+                    <div className="post-author lg:col-start-3 lg:row-start-2 row-start-3 lg:place-self-end place-self-center text-tertiary-gray-400">{post?.populatedAuthors && formatAuthors(post?.populatedAuthors)}</div>
+                        
+                </div>
+            </div>
+            <RichText className="max-w-[78rem] mx-auto" data={post.content} enableGutter={false} />
+            {post.relatedPosts && post.relatedPosts.length > 0 && (
+                <RelatedPosts
+                className="mt-12 max-w-[52rem] lg:grid lg:grid-cols-subgrid col-start-1 col-span-3 grid-rows-[2fr]"
+                docs={post.relatedPosts.filter((post) => typeof post === 'object')}
+                />
+            )}
         </div>
       </div>
     </article>

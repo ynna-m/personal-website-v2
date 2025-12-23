@@ -13,9 +13,17 @@ const config = {
   plugins: [tailwindcssAnimate, typography],
   prefix: '',
   safelist: [
+    'lg:col-span-1',
+    'lg:col-span-2',
+    'lg:col-span-3',
     'lg:col-span-4',
+    'lg:col-span-5',
     'lg:col-span-6',
+    'lg:col-span-7',
     'lg:col-span-8',
+    'lg:col-span-9',
+    'lg:col-span-10',
+    'lg:col-span-11',
     'lg:col-span-12',
     'border-border',
     'bg-card',
@@ -38,11 +46,11 @@ const config = {
         xl: '2rem',
       },
       screens: {
-        '2xl': '86rem',
+        '2xl': '106rem',
         lg: '64rem',
         md: '48rem',
         sm: '40rem',
-        xl: '80rem',
+        xl: '100rem',
       },
     },
     extend: {
@@ -81,13 +89,74 @@ const config = {
           foreground: 'hsl(var(--popover-foreground))',
         },
         primary: {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))',
+        //   DEFAULT: 'hsl(var(--primary))',
+        //   foreground: 'hsl(var(--primary-foreground))',
+            yellow: {
+                DEFAULT: '#fcc707',
+                mid:'#ffd644',
+                light: '#ffe895'
+            },
+            dark: {
+                DEFAULT: '#292929',
+                900:'#222222',
+                800: '#18181a',
+                gray: '#575656'
+            }
         },
         ring: 'hsl(var(--ring))',
         secondary: {
-          DEFAULT: 'hsl(var(--secondary))',
-          foreground: 'hsl(var(--secondary-foreground))',
+        //   DEFAULT: 'hsl(var(--secondary))',
+        //   foreground: 'hsl(var(--secondary-foreground))',
+            blue:{
+                DEFAULT:'#2d335d',
+                light:'#dfe8ff'
+            },
+            pink:{
+                DEFAULT:'#d9456a',
+                light:'#ffa5ae'
+            }
+        },
+        tertiary: {
+            white: {
+                '100': 'rgba(255, 255, 255, .10)',
+                '200': 'rgba(255, 255, 255, .20)',
+                '300': 'rgba(255, 255, 255, .30)',
+                '400': 'rgba(255, 255, 255, .40)',
+                '500': 'rgba(255, 255, 255, .50)',
+                '600': 'rgba(255, 255, 255, .60)',
+                '700': 'rgba(255, 255, 255, .70)',
+                '800': 'rgba(255, 255, 255, .80)',
+                '900': 'rgba(255, 255, 255, .90)',
+                '999': 'rgba(255, 255, 255, 1)',
+                DEFAULT: 'rgba(255, 255, 255, 1)'
+            },
+            black: {
+                '100': 'rgba(0, 0, 0, .10)',
+                '200': 'rgba(0, 0, 0, .20)',
+                '300': 'rgba(0, 0, 0, .30)',
+                '400': 'rgba(0, 0, 0, .40)',
+                '500': 'rgba(0, 0, 0, .50)',
+                '600': 'rgba(0, 0, 0, .60)',
+                '700': 'rgba(0, 0, 0, .70)',
+                '800': 'rgba(0, 0, 0, .80)',
+                '900': 'rgba(0, 0, 0, .90)',
+                '999': 'rgba(0, 0, 0, 1)',
+                DEFAULT: 'rgba(0, 0, 0, 1)'
+            },
+            gray: {
+                '0': '#ffffff',
+                '100': '#dedede',
+                '200': '#c9c9c9',
+                '300': '#B3B3B3',
+                '400': '#9B9B9B',
+                '500': '#7d7d7d',
+                '600': '#5e5e5e',
+                '700': '#525252',
+                '800': '#404040',
+                '900': '#292929',
+                '999': '#000000',
+                DEFAULT: '#7d7d7d'
+            }
         },
         success: 'hsl(var(--success))',
         error: 'hsl(var(--error))',
@@ -96,6 +165,8 @@ const config = {
       fontFamily: {
         mono: ['var(--font-geist-mono)'],
         sans: ['var(--font-geist-sans)'],
+        inter: ['var(--font-inter)'],
+        "funnel-sans": ['var(--font-funnel-sans)']
       },
       keyframes: {
         'accordion-down': {
@@ -124,10 +195,10 @@ const config = {
           css: [
             {
               h1: {
-                fontSize: '2.5rem',
+                fontSize: '3rem',
               },
               h2: {
-                fontSize: '1.25rem',
+                fontSize: '2.25rem',
                 fontWeight: 600,
               },
             },

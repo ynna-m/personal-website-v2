@@ -120,10 +120,12 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
+    socialMedia: SocialMedia;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    socialMedia: SocialMediaSelect<false> | SocialMediaSelect<true>;
   };
   locale: null;
   user: User & {
@@ -208,7 +210,15 @@ export interface Page {
       | null;
     media?: (number | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
+  layout: (
+    | CallToActionBlock
+    | ContentBlock
+    | MediaBlock
+    | ArchiveBlock
+    | FormBlock
+    | SectionBlock
+    | CallToActionBtnsBlock
+  )[];
   meta?: {
     title?: string | null;
     /**
@@ -548,6 +558,7 @@ export interface ContentBlock {
  * via the `definition` "MediaBlock".
  */
 export interface MediaBlock {
+  customClassNames?: string | null;
   media: number | Media;
   id?: string | null;
   blockName?: string | null;
@@ -609,6 +620,7 @@ export interface FormBlock {
     };
     [k: string]: unknown;
   } | null;
+  customClassNames?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'formBlock';
@@ -727,6 +739,7 @@ export interface Form {
             blockName?: string | null;
             blockType: 'textarea';
           }
+        | DynamicTextarea
       )[]
     | null;
   submitButtonLabel?: string | null;
@@ -788,6 +801,132 @@ export interface Form {
   createdAt: string;
 }
 /**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DynamicTextarea".
+ */
+export interface DynamicTextarea {
+  name: string;
+  label?: string | null;
+  width?: number | null;
+  defaultValue?: string | null;
+  /**
+   * Controls the height of the textarea (1-20 rows)
+   */
+  rows?: number | null;
+  required?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'dynamicTextarea';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SectionBlock".
+ */
+export interface SectionBlock {
+  customClassNames?: string | null;
+  bgImage?: (number | null) | Media;
+  enableParallax?: boolean | null;
+  parallaxOrientation?: ('up' | 'down' | 'left' | 'right' | 'up right' | 'up left' | 'down right' | 'down left') | null;
+  parallaxScale?: number | null;
+  enableParallaxOver?: boolean | null;
+  parallaxOverlay?: string | null;
+  columns?:
+    | {
+        columnLabel?: string | null;
+        size?:
+          | (
+              | 'oneTwelfth'
+              | 'twoTwelfths'
+              | 'threeTwelfths'
+              | 'oneThird'
+              | 'fiveTwelfths'
+              | 'half'
+              | 'sevenTwelfths'
+              | 'twoThirds'
+              | 'nineTwelfths'
+              | 'tenTwelfths'
+              | 'elevenTwelfths'
+              | 'full'
+            )
+          | null;
+        customClassNames?: string | null;
+        blocks?:
+          | (
+              | RichTextBlock
+              | MediaBlock
+              | BlogBlock
+              | SkillsCloudBlock
+              | SkillsTileBlock
+              | SkillsLayoutBlock
+              | CarouselBlock
+              | SocialMediaBlock
+              | FormBlock
+              | SingleDocumentBlock
+            )[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'sectionBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "RichTextBlock".
+ */
+export interface RichTextBlock {
+  customClassNames?: string | null;
+  richText?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'richTextBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BlogBlock".
+ */
+export interface BlogBlock {
+  heading?: string | null;
+  /**
+   * How many posts to show (1-10)
+   */
+  numberOfPosts?: number | null;
+  category?: (number | null) | Category;
+  sort?: ('latest' | 'oldest') | null;
+  customClassNames?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'blogBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SkillsCloudBlock".
+ */
+export interface SkillsCloudBlock {
+  customClassNames?: string | null;
+  skills?: (number | Skill)[] | null;
+  width?: number | null;
+  height?: number | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'skillsCloudBlock';
+}
+/**
  * Developer skills collection
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -826,6 +965,123 @@ export interface SkillsCategory {
   createdAt: string;
 }
 /**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SkillsTileBlock".
+ */
+export interface SkillsTileBlock {
+  customClassNames?: string | null;
+  skills?: (number | Skill)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'skillsTileBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SkillsLayoutBlock".
+ */
+export interface SkillsLayoutBlock {
+  customClassNames?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'skillsLayoutBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CarouselBlock".
+ */
+export interface CarouselBlock {
+  collectionType: 'posts' | 'skills' | 'experience' | 'portfolio';
+  /**
+   * How many documents to show (1-10)
+   */
+  numberOfDocuments?: number | null;
+  customClassNames?: string | null;
+  sort?: ('latest' | 'oldest') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'carouselBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SocialMediaBlock".
+ */
+export interface SocialMediaBlock {
+  customClassNames?: string | null;
+  orientation?: ('vertical' | 'horizontal') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'socialMediaBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SingleDocumentBlock".
+ */
+export interface SingleDocumentBlock {
+  customClassNames?: string | null;
+  collectionSource: 'posts' | 'skills' | 'portfolio' | 'experience';
+  selectPosts?: {
+    relationTo: 'posts';
+    value: number | Post;
+  } | null;
+  selectSkills?: {
+    relationTo: 'skills';
+    value: number | Skill;
+  } | null;
+  selectExperience?: {
+    relationTo: 'experience';
+    value: number | Experience;
+  } | null;
+  selectPortfolio?: {
+    relationTo: 'portfolio';
+    value: number | Portfolio;
+  } | null;
+  headingEl?: ('none' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6') | null;
+  isTechStackEnabled?: boolean | null;
+  isImageEnabled?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'singleDocumentBlock';
+}
+/**
+ * Developer experience collection
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "experience".
+ */
+export interface Experience {
+  id: number;
+  title: string;
+  image?: (number | null) | Media;
+  dateFrom?: string | null;
+  dateTo?: string | null;
+  current?: boolean | null;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  techStack?: (number | Skill)[] | null;
+  publishedAt?: string | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
  * Developer portfolio list collection
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -851,6 +1107,14 @@ export interface Portfolio {
     [k: string]: unknown;
   } | null;
   'tech-stack'?: (number | Skill)[] | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
   publishedAt?: string | null;
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
@@ -862,19 +1126,12 @@ export interface Portfolio {
   _status?: ('draft' | 'published') | null;
 }
 /**
- * Developer experience collection
- *
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "experience".
+ * via the `definition` "CallToActionBtnsBlock".
  */
-export interface Experience {
-  id: number;
-  title: string;
-  image?: (number | null) | Media;
-  'date-from'?: string | null;
-  'date-to'?: string | null;
-  current?: boolean | null;
-  content?: {
+export interface CallToActionBtnsBlock {
+  customClassNames?: string | null;
+  richText?: {
     root: {
       type: string;
       children: {
@@ -889,16 +1146,41 @@ export interface Experience {
     };
     [k: string]: unknown;
   } | null;
-  'tech-stack'?: (number | Skill)[] | null;
-  publishedAt?: string | null;
-  /**
-   * When enabled, the slug will auto-generate from the title field on save and autosave.
-   */
-  generateSlug?: boolean | null;
-  slug: string;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
+  buttons?:
+    | {
+        button: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null)
+            | ({
+                relationTo: 'experience';
+                value: number | Experience;
+              } | null)
+            | ({
+                relationTo: 'portfolio';
+                value: number | Portfolio;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the button should be rendered.
+           */
+          appearance?: ('primary-btn' | 'secondary-btn' | 'tertiary-btn' | 'quartenary-btn' | 'disabled-btn') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ctabtns';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1224,6 +1506,8 @@ export interface PagesSelect<T extends boolean = true> {
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
+        sectionBlock?: T | SectionBlockSelect<T>;
+        ctabtns?: T | CallToActionBtnsBlockSelect<T>;
       };
   meta?:
     | T
@@ -1294,6 +1578,7 @@ export interface ContentBlockSelect<T extends boolean = true> {
  * via the `definition` "MediaBlock_select".
  */
 export interface MediaBlockSelect<T extends boolean = true> {
+  customClassNames?: T;
   media?: T;
   id?: T;
   blockName?: T;
@@ -1320,6 +1605,162 @@ export interface FormBlockSelect<T extends boolean = true> {
   form?: T;
   enableIntro?: T;
   introContent?: T;
+  customClassNames?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SectionBlock_select".
+ */
+export interface SectionBlockSelect<T extends boolean = true> {
+  customClassNames?: T;
+  bgImage?: T;
+  enableParallax?: T;
+  parallaxOrientation?: T;
+  parallaxScale?: T;
+  enableParallaxOver?: T;
+  parallaxOverlay?: T;
+  columns?:
+    | T
+    | {
+        columnLabel?: T;
+        size?: T;
+        customClassNames?: T;
+        blocks?:
+          | T
+          | {
+              richTextBlock?: T | RichTextBlockSelect<T>;
+              mediaBlock?: T | MediaBlockSelect<T>;
+              blogBlock?: T | BlogBlockSelect<T>;
+              skillsCloudBlock?: T | SkillsCloudBlockSelect<T>;
+              skillsTileBlock?: T | SkillsTileBlockSelect<T>;
+              skillsLayoutBlock?: T | SkillsLayoutBlockSelect<T>;
+              carouselBlock?: T | CarouselBlockSelect<T>;
+              socialMediaBlock?: T | SocialMediaBlockSelect<T>;
+              formBlock?: T | FormBlockSelect<T>;
+              singleDocumentBlock?: T | SingleDocumentBlockSelect<T>;
+            };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "RichTextBlock_select".
+ */
+export interface RichTextBlockSelect<T extends boolean = true> {
+  customClassNames?: T;
+  richText?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BlogBlock_select".
+ */
+export interface BlogBlockSelect<T extends boolean = true> {
+  heading?: T;
+  numberOfPosts?: T;
+  category?: T;
+  sort?: T;
+  customClassNames?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SkillsCloudBlock_select".
+ */
+export interface SkillsCloudBlockSelect<T extends boolean = true> {
+  customClassNames?: T;
+  skills?: T;
+  width?: T;
+  height?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SkillsTileBlock_select".
+ */
+export interface SkillsTileBlockSelect<T extends boolean = true> {
+  customClassNames?: T;
+  skills?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SkillsLayoutBlock_select".
+ */
+export interface SkillsLayoutBlockSelect<T extends boolean = true> {
+  customClassNames?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CarouselBlock_select".
+ */
+export interface CarouselBlockSelect<T extends boolean = true> {
+  collectionType?: T;
+  numberOfDocuments?: T;
+  customClassNames?: T;
+  sort?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SocialMediaBlock_select".
+ */
+export interface SocialMediaBlockSelect<T extends boolean = true> {
+  customClassNames?: T;
+  orientation?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SingleDocumentBlock_select".
+ */
+export interface SingleDocumentBlockSelect<T extends boolean = true> {
+  customClassNames?: T;
+  collectionSource?: T;
+  selectPosts?: T;
+  selectSkills?: T;
+  selectExperience?: T;
+  selectPortfolio?: T;
+  headingEl?: T;
+  isTechStackEnabled?: T;
+  isImageEnabled?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CallToActionBtnsBlock_select".
+ */
+export interface CallToActionBtnsBlockSelect<T extends boolean = true> {
+  customClassNames?: T;
+  richText?: T;
+  buttons?:
+    | T
+    | {
+        button?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }
@@ -1526,6 +1967,13 @@ export interface PortfolioSelect<T extends boolean = true> {
   image?: T;
   content?: T;
   'tech-stack'?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
   publishedAt?: T;
   generateSlug?: T;
   slug?: T;
@@ -1540,11 +1988,11 @@ export interface PortfolioSelect<T extends boolean = true> {
 export interface ExperienceSelect<T extends boolean = true> {
   title?: T;
   image?: T;
-  'date-from'?: T;
-  'date-to'?: T;
+  dateFrom?: T;
+  dateTo?: T;
   current?: T;
   content?: T;
-  'tech-stack'?: T;
+  techStack?: T;
   publishedAt?: T;
   generateSlug?: T;
   slug?: T;
@@ -1677,6 +2125,7 @@ export interface FormsSelect<T extends boolean = true> {
               id?: T;
               blockName?: T;
             };
+        dynamicTextarea?: T | DynamicTextareaSelect<T>;
       };
   submitButtonLabel?: T;
   confirmationType?: T;
@@ -1700,6 +2149,20 @@ export interface FormsSelect<T extends boolean = true> {
       };
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DynamicTextarea_select".
+ */
+export interface DynamicTextareaSelect<T extends boolean = true> {
+  name?: T;
+  label?: T;
+  width?: T;
+  defaultValue?: T;
+  rows?: T;
+  required?: T;
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1887,6 +2350,26 @@ export interface Footer {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "socialMedia".
+ */
+export interface SocialMedia {
+  id: number;
+  platforms?:
+    | {
+        platform: 'linkedin' | 'github' | 'facebook' | 'twitter';
+        url: string;
+        /**
+         * Optional custom icon
+         */
+        icon?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
@@ -1925,6 +2408,23 @@ export interface FooterSelect<T extends boolean = true> {
               url?: T;
               label?: T;
             };
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "socialMedia_select".
+ */
+export interface SocialMediaSelect<T extends boolean = true> {
+  platforms?:
+    | T
+    | {
+        platform?: T;
+        url?: T;
+        icon?: T;
         id?: T;
       };
   updatedAt?: T;

@@ -31,6 +31,7 @@ export const Search: React.FC = () => {
             setValue(event.target.value)
           }}
           placeholder="Search"
+          className='bg-tertiary-white'
         />
         <button type="submit" className="sr-only">
           submit
