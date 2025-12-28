@@ -165,7 +165,7 @@
     .section-block{
         @apply my-16  
     }
-    .section-block .container{
+    .section-block > .container{
         @apply grid grid-cols-4 lg:grid-cols-12 gap-y-8
     }
     /* Section Media Block */

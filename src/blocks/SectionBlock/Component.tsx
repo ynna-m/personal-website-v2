@@ -1,9 +1,8 @@
 import { cn } from '@/utilities/ui'
 import React from 'react'
 
-import type { Form, SectionBlock as SectionBlockProps, Media as MediaProps } from '@/payload-types'
+import type { SectionBlock as SectionBlockProps, Media as MediaProps } from '@/payload-types'
 
-import type {Form as FormType } from '@payloadcms/plugin-form-builder/types'
 import { RichTextBlock } from '../RichTextBlock/Component'
 import { MediaBlock } from '../MediaBlock/Component'
 import { BlogBlock } from '../BlogBlock/Component'
@@ -12,7 +11,7 @@ import { CarouselBlock } from '../CarouselBlock/Component'
 import { SkillsTileBlock } from '../SkillsTileBlock/Component'
 import { SocialMediaBlock } from '../SocialMediaBlock/Component'
 import { SkillsLayoutBlock } from '../SkillsLayoutBlock/Component'
-import { FormBlock } from '../Form/Component'
+import { CustomFormType, FormBlock } from '../Form/Component'
 import { SingleDocumentBlock } from '../SingleDocumentBlock/Component'
 import ParallaxImage from '@/components/ParallaxImage'
 import { Media } from '@/components/Media'
@@ -35,19 +34,7 @@ export const SectionBlock: React.FC<SectionBlockProps> = async (props) => {
         twoTwelfths:'2',
         oneTwelfth:'1',
     }
-    const columnLabel = {
-        richTextBlock: 'richtext',
-        mediaBlock: 'media',
-        blogBlock: 'blog',
-        skillsCloudBlock: 'skills-cloud',
-        carouselBlock: 'carousel',
-        socialMediaBlock: 'social-media',
-        skillsTileBlock: 'skills-tile',
-        skillsLayoutBlock: 'skills-layout',
-        formBlock: 'form',
-        singleDocumentBlock: 'single-document'
 
-    }
     // console.log("SectionBlock.tsx - props", props)
     const parallaxOverlayClass = `after:content-[''] after:w-full after:h-full after:z-20 
     after:col-start-1 after:row-start-1 after:bg-dynamic`
@@ -162,9 +149,11 @@ export const SectionBlock: React.FC<SectionBlockProps> = async (props) => {
                                             block.blockType == "formBlock"  && (
                                                 <div className={`form-block-container`} key={key}>
                                                     {
-                                                        block?.form && typeof block?.form != "number" && (
-                                                            <FormBlock {...block} enableIntro={false} form={block?.form}   />
-                                                        )
+                                                        block?.form 
+                                                            && typeof block?.form != "number" 
+                                                            && (
+                                                                <FormBlock enableIntro={false} form={block.form as unknown as CustomFormType } />
+                                                            )
                                                     }
                                                 </div>
                                             )

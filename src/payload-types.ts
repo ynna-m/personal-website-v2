@@ -799,6 +799,15 @@ export interface Form {
         id?: string | null;
       }[]
     | null;
+  enableCaptcha?: boolean | null;
+  /**
+   * Currently only supports hCaptcha
+   */
+  captchaProvider?: 'hCaptcha' | null;
+  /**
+   * Position of Captcha in relation to Submit Button
+   */
+  captchaPosition?: ('top' | 'left' | 'right') | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1224,6 +1233,7 @@ export interface FormSubmission {
         id?: string | null;
       }[]
     | null;
+  captcha?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -2149,6 +2159,9 @@ export interface FormsSelect<T extends boolean = true> {
         message?: T;
         id?: T;
       };
+  enableCaptcha?: T;
+  captchaProvider?: T;
+  captchaPosition?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2179,6 +2192,7 @@ export interface FormSubmissionsSelect<T extends boolean = true> {
         value?: T;
         id?: T;
       };
+  captcha?: T;
   updatedAt?: T;
   createdAt?: T;
 }

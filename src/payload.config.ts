@@ -22,6 +22,7 @@ import { Portfolio } from './collections/Portfolio'
 import { Experiences } from './collections/Experience'
 import { SocialMedia } from './SocialMedia/config'
 import { SiteSettings } from './SiteSettings/config'
+import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -109,4 +110,16 @@ export default buildConfig({
     },
     tasks: [],
   },
+  email: nodemailerAdapter({
+    defaultFromAddress:'ynnamaurer@ynnadev.com',
+    defaultFromName: 'Ynna Maurer',
+    transportOptions:{
+        host:process.env.SMTP_HOST,
+        port:process.env.SMTP_PORT,
+        auth:{
+            user:process.env.SMTP_EMAIL,
+            pass:process.env.SMTP_PASS
+        }
+    }
+  })
 })

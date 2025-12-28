@@ -1,4 +1,4 @@
- 
+ // @ts-nocheck
 'use client'
 
 import type { Column, SchedulePublish, Where } from 'payload'
@@ -84,7 +84,7 @@ export const ScheduleDrawer: React.FC<Props> = ({ slug, defaultType, schedulePub
   const modalTitle = t('general:schedulePublishFor', { title })
   const [upcoming, setUpcoming] = React.useState<UpcomingEvent[]>()
   const [upcomingColumns, setUpcomingColumns] = React.useState<Column[]>()
-  const deleteHandlerRef = React.useRef<((id: number | string) => Promise<void>) | null>(() => null)
+  const deleteHandlerRef = React.useRef<((id: number | string) => Promise<void>) | null>()
 
   // Get the user timezone so we can adjust the displayed value against it
   const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone

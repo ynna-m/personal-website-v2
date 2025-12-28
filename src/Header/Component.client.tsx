@@ -14,14 +14,12 @@ interface HeaderClientProps {
 }
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
   DrawerDescription,
   DrawerTitle,
-  DrawerTrigger
 } from "@/components/ui/drawer"
 import { Menu, X } from 'lucide-react'
-import { Button } from 'react-aria-components'
+// import { Button } from 'react-aria-components'
 export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   /* Storing the value in a useState to avoid hydration errors */
   const [theme, setTheme] = useState<string | null>(null)
@@ -42,7 +40,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
     setMobileDrawerOpen(!open)
   }
   return (
-    <header className="ynna-dev-header  relative z-[99] sticky top-0 " {...(theme ? { 'data-theme': theme } : {})}>
+    <header className="ynna-dev-header z-[99] sticky top-0 " {...(theme ? { 'data-theme': theme } : {})}>
       <div className="header-content container py-4 flex justify-between ">
         <Link href="/">
           <Logo loading="eager" priority="high" />

@@ -1,8 +1,6 @@
 import type { Metadata } from 'next'
 
-import { cn } from '@/utilities/ui'
-import { GeistMono } from 'geist/font/mono'
-import { GeistSans } from 'geist/font/sans'
+
 import React from 'react'
 
 import { AdminBar } from '@/components/AdminBar'
@@ -20,8 +18,9 @@ import { PageLoaderProgress } from '@/components/PageLoaderProgress'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { UnderConstructionMode } from '@/components/UnderConstructionMode'
-import { authenticated } from '@/access/authenticated'
+
 import { getMeUser } from '@/utilities/getMeUser'
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 const inter = Inter({
     variable: '--font-inter',
@@ -51,6 +50,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 <link href="/favicon.png" rel="icon" type="image/png" />
             </head>
             <body>
+                <GoogleAnalytics gaId={process.env.GA_MEASUREMENT_ID || ``} />
                 {
                     (general?.isUnderConst && !user) && (
                         <UnderConstructionMode {...general} />

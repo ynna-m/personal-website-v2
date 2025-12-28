@@ -61,27 +61,110 @@ export const plugins: Plugin[] = [
       dynamicTextArea:DynamicTextarea,
     },
     formOverrides: {
-      fields: ({ defaultFields }) => {
-        return defaultFields.map((field) => {
-          if ('name' in field && field.name === 'confirmationMessage') {
-            return {
-              ...field,
-              required:true,
-              editor: lexicalEditor({
-                features: ({ rootFeatures }) => {
-                  return [
-                    ...rootFeatures,
-                    FixedToolbarFeature(),
-                    HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-                  ]
+      fields: ({ defaultFields }) => [
+            ...defaultFields.map((field) =>{
+                if ('name' in field && field.name === 'confirmationMessage') {
+                    return {
+                        ...field,
+                        required:true,
+                        editor: lexicalEditor({
+                            features: ({ rootFeatures }) => {
+                            return [
+                                ...rootFeatures,
+                                FixedToolbarFeature(),
+                                HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+                            ]
+                            },
+                        }),
+                    }
+                }
+                return field
+            }),
+            {
+                name: 'enableCaptcha',
+                type: 'checkbox',
+                label: 'Enable Captcha?'
+            },
+            {
+                name:'captchaProvider',
+                type:'select',
+                label:'Select Captcha Provider',
+                options:[
+                    {
+                        value:'hCaptcha',
+                        label:'hCaptcha'
+                    }
+                ],
+                required:true,
+                admin:{
+                    condition:(_,siblingData)=>siblingData.enableCaptcha,
+                    description:'Currently only supports hCaptcha'
+                }
+            },
+            {
+                name:'captchaPosition',
+                type:'select',
+                label:'Select Captcha Position',
+                options:[
+                    {
+                        value:'top',
+                        label:'Top'
+                    },
+                    {
+                        value:'left',
+                        label:'Left'
+                    },
+                    {
+                        value:'right',
+                        label:'Right'
+                    },
+                ],
+                admin:{
+                    condition:(_,siblingData)=>siblingData.enableCaptcha,
+                    description:'Position of Captcha in relation to Submit Button'
                 },
-              }),
+                defaultValue:"left",
+                required:true
             }
-          }
-          return field
-        })
-      },
+        ],
     },
+    formSubmissionOverrides:{
+        fields:({defaultFields}) => [
+            ...defaultFields,
+            {
+                name:'captcha',
+                type: 'text',
+                validate: async(value:any, {req, siblingData}:any) => {
+                    const form : any = await req.payload.findByID({
+                        id:siblingData?.form,
+                        collection:'forms'
+                    })
+                    if(!form.enableCaptcha){
+                        return true
+                    }
+                    if(!value){
+                        return 'Please complete Captcha'
+                    }
+                    const hCaptchaURL = `https://api.hcaptcha.com/siteverify`
+                    const payload = {
+                        secret: process.env.HCAPTCHA_SECRET_KEY,
+                        response: value
+                    }
+                    const res:any = await fetch(hCaptchaURL,{
+                        method:'POST',
+                        body:JSON.stringify(payload)
+                    })
+                    const data = await res.json()
+                    if(data.success){
+                        return 'Invalid captcha'
+                    }
+                    else{
+                        return true
+                    }
+                }
+            }
+        ]
+    }
   }),
   searchPlugin({
     collections: ['posts'],

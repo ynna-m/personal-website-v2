@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 
-import { RelatedPosts } from '@/blocks/RelatedPosts/Component'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
@@ -8,15 +7,12 @@ import { draftMode } from 'next/headers'
 import React, { cache } from 'react'
 import RichText from '@/components/RichText'
 
-import type { Post, Skill } from '@/payload-types'
 
-import { PostHero } from '@/heros/PostHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { ThemeImage } from '@/components/ThemeImage'
-import { format } from 'date-fns'
-import { formatAuthors } from '@/utilities/formatAuthors'
+
 import { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 import { SkillsTileBlock } from '@/blocks/SkillsTileBlock/Component'
 import Link from 'next/link'
@@ -56,7 +52,7 @@ export default async function Portfolio({ params: paramsPromise }: Args) {
     const post = await queryPostBySlug({ slug: decodedSlug })
 
     if (!post) return <PayloadRedirects url={url} />
-    console.log("portfolio-page - tech stack",post['tech-stack'])
+    // console.log("portfolio-page - tech stack",post['tech-stack'])
     return (
         <article className="pt-16 pb-16 post">
             <PageClient />
@@ -71,7 +67,7 @@ export default async function Portfolio({ params: paramsPromise }: Args) {
             <div className="flex flex-col items-center gap-4 pt-8">
                 <div className="container bg-primary-dark ">
                     <div className="back-to-portfolio-link mt-12">
-                        <Link href={'/portfolio'}>← Back to Portfolio List</Link>
+                        <Link href={'/portfolio/'}>← Back to Portfolio List</Link>
                     </div>
                     <div className="portfolio-hero-container">
                         <div className="portfolio-image mt-12">

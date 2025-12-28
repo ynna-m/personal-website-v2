@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/carousel"
 import { getPayload } from 'payload'
 import config from '@payload-config'
-import { Media } from '@/components/Media'
 import { convertLexicalToPlaintext } from '@payloadcms/richtext-lexical/plaintext'
 import { ThemeImage } from '@/components/ThemeImage'
 

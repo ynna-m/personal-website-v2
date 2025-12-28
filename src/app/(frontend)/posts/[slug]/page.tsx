@@ -10,7 +10,6 @@ import RichText from '@/components/RichText'
 
 import type { Post } from '@/payload-types'
 
-import { PostHero } from '@/heros/PostHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
@@ -69,7 +68,7 @@ export default async function Post({ params: paramsPromise }: Args) {
       <div className="flex flex-col items-center gap-4 pt-8">
         <div className="container bg-primary-dark ">
             <div className="back-to-portfolio-link mt-12">
-                <Link href={'/posts'}>← Back to Blog</Link>
+                <Link href={'/posts/'}>← Back to Blog</Link>
             </div>
             <div className="post-hero-container">
                 <div className="post-image mt-12">
@@ -93,13 +92,13 @@ export default async function Post({ params: paramsPromise }: Args) {
                     <div className="post-categories row-start-1 col-span-3 grid gap-1 place-content-center grid-flow-col">
                         {
                             post?.categories 
-                            && post.categories?.map((category, index, array) => {
+                            && post.categories?.map((category, index) => {
                                 if (typeof category === 'object') {
                                     const { title: titleFromCategory } = category
 
                                     const categoryTitle = titleFromCategory || 'Untitled category'
 
-                                    const isLast = index === array.length - 1
+
 
                                     return (
                                         <div className={`bg-primary-dark-gray px-4 py-1 rounded-xl`} key={index}>

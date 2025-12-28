@@ -2,24 +2,16 @@
 import { cn } from '@/utilities/ui'
 import useClickableCard from '@/utilities/useClickableCard'
 import Link from 'next/link'
-import React, { Fragment } from 'react'
+import React from 'react'
 
 import type { Portfolio, Post } from '@/payload-types'
 
-import { Media } from '@/components/Media'
-import { ImageMedia } from '../Media/ImageMedia'
 import { format } from 'date-fns'
 import { ThemeImage } from '../ThemeImage'
 import { convertLexicalToPlaintext } from '@payloadcms/richtext-lexical/plaintext'
 import { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 
-// const placeholderSrc = 
-const placeholder = {
-    src:'/media/No_Image_Available.jpg',
-    size: "33vw",
-    width: 547,
-    height: 547
-}
+
 
 export type CardPostData = Pick<Post, 'slug' | 'categories' | 'meta' | 'title' | 'publishedAt'>
 export type CardPortfolioData = Pick<Portfolio, 'slug' | 'title' | 'content' | 'image'>
@@ -116,7 +108,7 @@ export const CardPortfolio: React.FC<{
   title?: string
 }> = (props) => {
     const { card, link } = useClickableCard({})
-    const { className, doc, showCategories, title: titleFromProps } = props
+    const { className, doc, title: titleFromProps } = props
 
     const { slug, content, title, image } = doc || {}
         

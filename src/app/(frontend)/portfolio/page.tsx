@@ -11,17 +11,18 @@ import ParallaxImage from '@/components/ParallaxImage'
 import { ImageMedia } from '@/components/Media/ImageMedia'
 // import { Media } from '@/components/Media'
 
-export const dynamic = 'force-static'
+export const dynamic = 'force-dynamic'
 export const revalidate = 600
-const bgImage = {
-    src:'/media/bg_halftone.png',
-    size: "33vw",
-    width: 2550,
-    height: 3300
-}
-export default async function Page() {
-  const payload = await getPayload({ config: configPromise })
 
+export default async function Page() {
+    const bgImage = {
+        src:'/media/bg_halftone.png',
+        size: "33vw",
+        width: 2550,
+        height: 3300
+    }
+  const payload = await getPayload({ config: configPromise })
+    
   const posts = await payload.find({
     collection: 'portfolio',
     depth: 1,

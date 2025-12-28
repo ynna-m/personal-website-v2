@@ -100,7 +100,7 @@ export const Filters = (props:FiltersProps) => {
                                     return (selectedOptions?.slug === name && filterSelection) 
                                         ? filterSelection 
                                         : selectedOptions
-                                }) 
+                                }) ?? []
                                 return newSelection
                             })
                         }
@@ -111,7 +111,7 @@ export const Filters = (props:FiltersProps) => {
                                         slug:filter.slug,
                                         selectedOptions:filterSelection?.selectedOptions 
                                     }
-                                })
+                                }) ?? []
                             })
                         }
                     }}
@@ -128,6 +128,7 @@ export const Filters = (props:FiltersProps) => {
                     filter.selectedOptions = []
                     return filter
                 })
+            return []
         })
     }
     // console.log("Filters.tsx - props", props)

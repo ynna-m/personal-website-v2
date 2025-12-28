@@ -10,7 +10,7 @@ import PageClient from './page.client'
 import ParallaxImage from '@/components/ParallaxImage'
 import { ImageMedia } from '@/components/Media/ImageMedia'
 
-export const dynamic = 'force-static'
+export const dynamic = 'force-dynamic'
 export const revalidate = 600
 type Args = {
   params: Promise<{

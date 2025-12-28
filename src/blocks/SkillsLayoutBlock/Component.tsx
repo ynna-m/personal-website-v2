@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import type {  Media as MediaProp, Skill, SkillsCategory, SkillsLayoutBlock as SkillsLayoutBlockProps } from "@/payload-types"
+import type {  Skill, SkillsCategory, SkillsLayoutBlock as SkillsLayoutBlockProps } from "@/payload-types"
 import { payloadGraphQL } from '@/utilities/payloadGraphQL'
 import { Input } from '@/components/ui/input'
 import { useDebounce } from '@/utilities/useDebounce'
@@ -9,9 +9,9 @@ import { Media } from '@/components/Media'
 import { Search } from 'lucide-react'
 import { Progress } from '@/components/ui/progress'
 import {
-    TooltipProvider,
     Tooltip,
     TooltipContent,
+    TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
 
@@ -336,6 +336,7 @@ export const SkillsLayoutBlock:React.FC<SkillsLayoutBlockProps> = (props) => {
                             <div className="skills-category" key={index}>
                                 <div className="skills-heading"><h3>{skillsCategory?.category?.label}</h3></div>
                                 <div className="skills-layout-set">
+                                    <TooltipProvider>
                                     {
                                         skillsCategory?.skills?.map((skill: Skill,key: React.Key | null | undefined)=>{
                                             return(
@@ -369,6 +370,7 @@ export const SkillsLayoutBlock:React.FC<SkillsLayoutBlockProps> = (props) => {
                                             )
                                         })
                                     }
+                                    </TooltipProvider>
                                 </div>
                             </div>
                         )

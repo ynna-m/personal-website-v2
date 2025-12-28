@@ -41,7 +41,9 @@ const addToCssValue  = (value: string, amount: number): string | null => {
   const parsed = parseCssValue(value)
   if (!parsed) return null
 
-  return `\( {parsed.number + amount} \){parsed.unit}`
+  const {number, unit} = parsed;
+
+  return `${number + amount}${unit}`
 }
 
 // Tests
@@ -60,7 +62,7 @@ export const ThemeImage = (props:ThemeImageProps) => {
         : typeof height === "number"
         ? `${height}px`
         : "40rem"
-    const bgHeight = addToCssValue(imageHeight,5)
+    const bgHeight = addToCssValue(imageHeight, 5)
     const picClassStyle1 = `items-center h-full before:content=[''] before:bg-primary-yellow before:w-full before:h-full before:col-start-2 before:col-end-3 
                             before:row-start-1 before:row-end-4`;
     const picClassStyle2 = `before:content=[''] before:bg-primary-yellow before:w-full before:h-full before:col-start-1 before:col-end-4 

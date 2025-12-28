@@ -1,6 +1,5 @@
-import { getPayload, Option, type Block } from 'payload'
-import payload from 'payload'
-import config from "@payload-config"
+import {  type Block } from 'payload'
+
 
 
 export const CarouselBlock: Block = {

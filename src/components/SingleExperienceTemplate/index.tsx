@@ -1,4 +1,4 @@
-import type { Experience as ExperienceProps, Media as MediaType } from '@/payload-types'
+import type { Experience as ExperienceProps, Media as MediaType, Skill } from '@/payload-types'
 import React from 'react'
 import RichText from '../RichText'
 import { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
@@ -30,7 +30,7 @@ export const SingleExperienceTemplate = (props:SingleExperienceTemplateProps) =>
             {
                 isImageEnable && (
                     <div className="experience-image">
-                        {image && (<Media {...image as MediaType} />)}
+                        {image && (<Media {...image as MediaType} alt={``} />)}
                     </div>
                 )
             }
@@ -73,9 +73,10 @@ export const SingleExperienceTemplate = (props:SingleExperienceTemplateProps) =>
                     <div className="experience-tech-stack">
                         {
                             techStack?.map((tech, index)=>{
+                                const techFormat = tech as Skill;
                                 return (
                                     <div className="tech-tile" key={index}>
-                                        {tech?.image && (<Media {...tech?.image as MediaType} />)}
+                                        {techFormat?.image && (<Media {...techFormat?.image as MediaType} alt={``} />)}
                                     </div>
                                 )
                             })

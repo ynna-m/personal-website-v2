@@ -1,14 +1,11 @@
 "use client"
-import { Button, useField } from '@payloadcms/ui';
+import {  useField } from '@payloadcms/ui';
 import * as React from 'react';
 import {
   ColorArea,
-  ColorField,
   ColorPicker,
   ColorSlider,
   ColorSwatch,
-  ColorSwatchPicker,
-  ColorSwatchPickerItem,
   ColorThumb,
   SliderTrack,
 } from "@/components/ui/color"
@@ -17,8 +14,7 @@ import {
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover"
 import { Label } from '../ui/label';
 import { Input } from '../ui/input';
-import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog"
-import { getColorChannels, parseColor } from "react-aria-components"
+import { parseColor } from "react-aria-components"
 import { useEffect, useState } from 'react';
 // import { PopoverContent } from '@radix-ui/react-popover';
 // import { Input } from "@/components/ui/textfield"

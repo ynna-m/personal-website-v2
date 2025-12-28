@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client"
 import { cn } from '@/utilities/ui';
 import React from 'react'
