@@ -47,7 +47,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
         </Link>
         <HeaderNav data={data} className={`lg:flex hidden`}/>
         <a href="#" onClick={()=>handleOnClickBurger(isMobileDrawerOpen)} className={`ml-auto lg:hidden sm:grid`}>
-            <Menu />
+            <Menu className={`w-16 h-full`} />
         </a>
         <div className="mobile-drawer lg:hidden ">
             <Drawer open={isMobileDrawerOpen} onOpenChange={handleOnClickBurger} direction='right'>

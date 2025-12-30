@@ -13,22 +13,28 @@
     font-weight: unset;
     @apply font-inter
   }
-  h1{
+  h1,
+  .post .container h1{
     font-size:3rem
   }
-  h2{
+  h2,
+  .post .container h2{
     font-size:2.25rem
   }
-  h3{
+  h3,
+  .post .container h3{
     font-size:2rem
   }
-  h4{
+  h4,
+  .post .container h4{
     font-size:1.75rem
   }
-  h5{
+  h5,
+  .post .container h5{
     font-size:1.25rem
   }
-  h6{
+  h6,
+  .post .container h6{
     font-size:1.125rem
   }
   :root {
@@ -114,7 +120,8 @@
         @apply max-w-[1680px]
     }
     /* Single Post Template */
-    .post .container{
+    .post .container,
+    .post .container blockquote{
         @apply text-tertiary-white
     }
     .post .container h1,
@@ -124,7 +131,7 @@
     .post .container h5,
     .post .container h6,
     .post .container a{
-        @apply text-primary-yellow
+        @apply text-primary-yellow font-bold
     }
     .post .container .card .categories a{
         @apply text-tertiary-white

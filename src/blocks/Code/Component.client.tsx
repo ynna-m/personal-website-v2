@@ -1,7 +1,11 @@
 'use client'
-import { Highlight, themes } from 'prism-react-renderer'
+import { Highlight, themes, Prism } from 'prism-react-renderer'
 import React from 'react'
 import { CopyButton } from './CopyButton'
+
+(typeof global !== "undefined" ? global : window).Prism = Prism;
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+require("prismjs/components/prism-bash"); 
 
 type Props = {
   code: string
@@ -12,7 +16,7 @@ export const Code: React.FC<Props> = ({ code, language = '' }) => {
   if (!code) return null
 
   return (
-    <Highlight code={code} language={language} theme={themes.vsDark}>
+    <Highlight prism={Prism} code={code} language={language} theme={themes.vsDark}>
       {({ getLineProps, getTokenProps, tokens }) => (
         <pre className="bg-black p-4 border text-xs border-border rounded overflow-x-auto">
           {tokens.map((line, i) => (

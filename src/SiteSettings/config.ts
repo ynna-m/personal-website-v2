@@ -48,7 +48,8 @@ export const SiteSettings: GlobalConfig = {
                             admin: { 
                                 components:{
                                     Field:'@/components/ColorPickerRGBAField'
-                                }
+                                },
+                                condition: (_, sibling) => sibling.isUnderConst 
                             },
                         },
                     ]
